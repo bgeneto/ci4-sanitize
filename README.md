@@ -1,6 +1,6 @@
 # CI4 Sanitize Library
 
-A CodeIgniter 4 (CI4) library that provides a flexible, rule-based data sanitization solution. This library includes the `Sanitizer` class and the `SanitizableTrait` trait, which allow you to easily sanitize data in models and elsewhere in your application.
+A CodeIgniter 4 (CI4) library that provides a flexible, rule-based data sanitization solution. This library includes the `Sanitize` class and the `SanitizableTrait` trait, which allow you to easily sanitize data in models and elsewhere in your application.
 
 ## Features
 
@@ -17,13 +17,22 @@ A CodeIgniter 4 (CI4) library that provides a flexible, rule-based data sanitiza
 
 ## Installation
 
-1. Clone the repository into your CodeIgniter 4 project or install via Composer (if published on Packagist).
+1. You can clone the repository into your CodeIgniter 4 project and make a local Composer install.
 
     ```bash
-    git clone https://github.com/yourusername/ci4-sanitization-library.git
+    git clone https://github.com/bgeneto/ci4-sanitize.git
     ```
 
-2. Include the library in your project by updating your autoloader (if necessary) or via Composer's PSR-4.
+2. You can also config your current project's `composer.json` file like this to install remotely: 
+
+    ```
+    "require": {
+        "codeigniter4/framework": "~4.6.0",
+    ===>"bgeneto/sanitize": "dev-main"
+    },
+    ```
+
+3. Then include the library in your project by updating your autoloader (not necessary if using CodeIgniter4 Autoloader).
 
 ## Usage
 
@@ -90,7 +99,7 @@ $model->addSanitizationRule('link', 'slug');
 
 ### Registering Global Custom Sanitization Rules
 
-You can register a custom sanitization rule either directly through the `Sanitizer` class or by using the trait’s wrapper method:
+You can register a custom sanitization rule either directly through the `Sanitize` class or by using the trait’s wrapper method:
 
 ```php
 use App\Traits\SanitizableTrait;
@@ -110,10 +119,10 @@ $this->setSanitizationRules([
 
 ### Sanitizing Arbitrary Data
 
-If you need to sanitize data outside of a model (e.g. in a controller), use the static method of the `Sanitizer` class:
+If you need to sanitize data outside of a model (e.g. in a controller), use the static method of the `Sanitize` class:
 
 ```php
-use App\Libraries\Sanitizer;
+use App\Libraries\Sanitize;
 
 $data = ['name' => '  example name '];
 $rules = [
@@ -125,7 +134,7 @@ $sanitizedData = Sanitizer::sanitizeDataArray($data, $rules);
 
 ## Configuration
 
-Global sanitization rules can be defined in a custom configuration file (e.g., Sanitization.php). The library loads these rules automatically in the `Sanitizer` constructor:
+Global sanitization rules can be defined in a custom configuration file (`Sanitization.php`). This file can be created after package installation via `php spark sanitize:publish` CLI command.  The library loads these rules automatically in the `Sanitize` constructor:
 
 ```php
 <?php
