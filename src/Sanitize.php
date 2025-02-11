@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Sanitizer Class
+ * Sanitize Class
  *
  * Provides data sanitization functionality.
  *
@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace App\Libraries;
 
-class Sanitizer
+class Sanitize
 {
     /**
      * Configuration array to define default/global sanitization rules.
@@ -44,8 +44,6 @@ class Sanitizer
      *
      * @param string   $rule     Rule name
      * @param callable $callback Callback to execute for custom sanitization.
-     *
-     * @return void
      */
     public static function registerRule(string $rule, callable $callback): void
     {
@@ -200,6 +198,7 @@ class Sanitizer
                 if (isset(self::$customRules[$rule])) {
                     return \call_user_func(self::$customRules[$rule], $value);
                 }
+
                 return $value; // Rule not found, return original value
         }
     }

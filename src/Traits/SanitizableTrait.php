@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use App\Libraries\Sanitizer;
+use App\Libraries\Sanitize;
 use RuntimeException;
 
 trait SanitizableTrait
@@ -39,8 +39,6 @@ trait SanitizableTrait
 
     /**
      * Allowed callbacks for the model.
-     *
-     * @var array
      */
     protected array $allowedCallbacks = [
         'beforeInsert',
@@ -59,16 +57,14 @@ trait SanitizableTrait
 
     /**
      * Register a global custom sanitization rule.
-     * This is a static wrapper around Sanitizer::registerRule()
+     * This is a static wrapper around Sanitize::registerRule()
      *
      * @param string   $rule     Rule name.
      * @param callable $callback Callback to execute for custom sanitization.
-     *
-     * @return void
      */
     public static function registerCustomSanitizationRule(string $rule, callable $callback): void
     {
-        Sanitizer::registerRule($rule, $callback);
+        Sanitize::registerRule($rule, $callback);
     }
 
     /**
@@ -97,7 +93,7 @@ trait SanitizableTrait
 
     public function sanitizeData(array $data): array
     {
-        $sanitizer = new Sanitizer();
+        $sanitizer = new Sanitize();
         $modelName = class_basename($this);
         $allRules  = $this->loadAllRules($modelName);
 
@@ -114,7 +110,7 @@ trait SanitizableTrait
      */
     protected function loadAllRules(string $modelName): array
     {
-        $sanitizer   = new Sanitizer();
+        $sanitizer   = new Sanitize();
         $configRules = $sanitizer->loadRules($modelName, $this->sanitizationRules);
 
         return array_replace_recursive($configRules, $this->dynamicSanitizationRules);
@@ -167,8 +163,6 @@ trait SanitizableTrait
      * @param array|string $values   The values to merge with the existing callbacks.
      *
      * @throws RuntimeException If the specified callback is not allowed.
-     *
-     * @return void
      */
     public function addCallback(string $callback, array|string $values): void
     {

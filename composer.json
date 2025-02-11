@@ -17,10 +17,12 @@
     "license": "MIT",
     "require":
     {
-        "php": ">=7.4",
+        "php": ">=8.0"
     },
     "require-dev":
     {
+        "codeigniter4/devkit": "*",
+        "codeigniter4/framework": "^4",
         "friendsofphp/php-cs-fixer": "^3.68",
         "codeigniter/coding-standard": "^1.8",
         "nexusphp/cs-config": "^3.25"
@@ -53,7 +55,7 @@
             "Composer\\Config::disableProcessTimeout",
             "php-cs-fixer fix --ansi --verbose --diff"
         ],
-        "style": "@cs-fix",
+        "style": "@cs-fix"
     },
     "config": {
         "allow-plugins": {
