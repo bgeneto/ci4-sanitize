@@ -28,7 +28,7 @@ A CodeIgniter 4 (CI4) library that provides a flexible, rule-based data sanitiza
     ```
         "require": {
             "codeigniter4/framework": "~4.6.0",
-        ===>"bgeneto/sanitize": "dev-main"
+        ===>"bgeneto/ci4-sanitize": "dev-main"
         },
         ...
         "repositories": {
