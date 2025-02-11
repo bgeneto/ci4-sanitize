@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace App\Libraries;
+namespace Bgeneto\Sanitize;
 
 class Sanitize
 {

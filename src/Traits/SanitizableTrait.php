@@ -15,10 +15,9 @@
 
 declare(strict_types=1);
 
-namespace App\Traits;
+namespace Bgeneto\Sanitize\Traits;
 
-use App\Libraries\Sanitize;
-use RuntimeException;
+use Bgeneto\Sanitize\Sanitize;
 
 trait SanitizableTrait
 {
@@ -162,12 +161,12 @@ trait SanitizableTrait
      * @param string       $callback The name of the callback to add.
      * @param array|string $values   The values to merge with the existing callbacks.
      *
-     * @throws RuntimeException If the specified callback is not allowed.
+     * @throws \RuntimeException If the specified callback is not allowed.
      */
     public function addCallback(string $callback, array|string $values): void
     {
         if (! in_array($callback, $this->allowedCallbacks, true)) {
-            throw new RuntimeException('Invalid callback: ' . $callback);
+            throw new \RuntimeException('Invalid callback: ' . $callback);
         }
 
         if (! is_array($values)) {

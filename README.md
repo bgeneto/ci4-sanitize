@@ -26,10 +26,17 @@ A CodeIgniter 4 (CI4) library that provides a flexible, rule-based data sanitiza
 2. You can also config your current project's `composer.json` file like this to install remotely: 
 
     ```
-    "require": {
-        "codeigniter4/framework": "~4.6.0",
-    ===>"bgeneto/sanitize": "dev-main"
-    },
+        "require": {
+            "codeigniter4/framework": "~4.6.0",
+        ===>"bgeneto/sanitize": "dev-main"
+        },
+        ...
+        "repositories": {
+            "sanitize": {
+                "type": "vcs",
+                "url": "https://github.com/bgeneto/ci4-sanitize.git"
+            }
+        },
     ```
 
 3. Then include the library in your project by updating your autoloader (not necessary if using CodeIgniter4 Autoloader).

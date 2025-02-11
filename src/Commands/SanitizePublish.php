@@ -78,7 +78,6 @@ class SanitizePublish extends BaseCommand
         $path    = "{$this->sourcePath}/Config/Sanitization.php";
         $content = file_get_contents($path);
         $content = str_replace('namespace Bgeneto\Sanitize\Config', 'namespace Config', $content);
-        $content = str_replace('extends BaseConfig', 'extends \\Bgeneto\\Sanitize\\Config\\Sanitize', $content);
         $this->writeFile('Config/Sanitization.php', $content);
     }
 

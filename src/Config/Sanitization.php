@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Config;
+namespace Bgeneto\Sanitize\Config;
 
 use CodeIgniter\Config\BaseConfig;
 
