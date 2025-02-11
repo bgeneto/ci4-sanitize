@@ -17,18 +17,37 @@ A CodeIgniter 4 (CI4) library that provides a flexible, rule-based data sanitiza
 
 ## Installation
 
-1. You can clone the repository into your CodeIgniter 4 project and make a local Composer install.
+1. The easiest way to install this package is with Composer and Packagist:
+    ```bash
+    composer require bgeneto/ci4-sanitize
+    ```
+2. You can clone the repository into your CodeIgniter 4 project and make a local Composer install.
 
     ```bash
-    git clone https://github.com/bgeneto/ci4-sanitize.git
+    git clone https://github.com/bgeneto/ci4-sanitize.git path/to/your/local/ci4-sanitize
     ```
-
-2. You can also config your current project's `composer.json` file like this to install remotely: 
-
-    ```
+    Now edit your `composer.json` file and add a new repository:
+    ```json
+    {
         "require": {
-            "codeigniter4/framework": "~4.6.0",
-        ===>"bgeneto/ci4-sanitize": "dev-main"
+            "your-project/other-dependencies": "...",
+            "bgeneto/ci4-sanitize": "dev-main"
+        },
+        "repositories": [
+            {
+                "type": "path",
+                "url": "path/to/your/local/ci4-sanitize"
+            }
+        ]
+    }
+    ```
+3. You can also config your current project's `composer.json` file like this to install via GitHub: 
+
+    ```
+    {
+        "require": {
+            "your-project/other-dependencies": "...",
+            "bgeneto/ci4-sanitize": "dev-main"
         },
         ...
         "repositories": {
@@ -39,7 +58,7 @@ A CodeIgniter 4 (CI4) library that provides a flexible, rule-based data sanitiza
         },
     ```
 
-3. Then include the library in your project by updating your autoloader (not necessary if using CodeIgniter4 Autoloader).
+4. Then include the library in your project by updating your autoloader (not necessary if using CodeIgniter4 Autoloader).
 
 ## Usage
 
