@@ -1,51 +1,69 @@
 {
     "name": "bgeneto/ci4-sanitize",
-    "description": "Sanitization Package for Codeigniter 4 PHP Framework",
+    "description": "Data sanitization package for Codeigniter 4 framework",
     "keywords":
     [
         "codeigniter", "codeigniter4", "sanitization", "model", "view", "controller", "html", "php"
     ],
     "homepage": "https://github.com/bgeneto/ci4-sanitize",
-    "authors":
-    [
+    "authors": [
         {
-            "name": "bgeneto",
+            "name": "Bernhard Enders",
+            "email": "bgeneto@gmail.com",
             "homepage": "https://github.com/bgeneto",
             "role": "Developer"
         }
     ],
-    "license": "MIT",
-    "require":
-    {
-        "php": ">=8.0"
+    "require": {
+        "php": "^7.4 || ^8.0"
     },
-    "require-dev":
-    {
+    "require-dev": {
         "codeigniter4/devkit": "*",
-        "codeigniter4/framework": "^4",
-        "friendsofphp/php-cs-fixer": "^3.68",
+        "codeigniter4/framework": "^4.1",
         "codeigniter/coding-standard": "^1.8",
+        "friendsofphp/php-cs-fixer": "^3.68",
         "nexusphp/cs-config": "^3.25"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "autoload":
-    {
-        "psr-4":
-        {
-            "Bgeneto\\Sanitize\\": "src/"
+    "autoload": {
+        "psr-4": {
+            "Bgeneto\\Sanitize\\": "src"
+        },
+        "exclude-from-classmap": [
+            "**/Database/Migrations/**"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Support\\": "tests/_support"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
         }
     },
     "scripts": {
         "analyze": [
             "phpstan analyze"
         ],
-        "sa": "@analyze",
         "ci": [
             "Composer\\Config::disableProcessTimeout",
-            "@cs",
             "@deduplicate",
-            "@analyze"
+            "@analyze",
+            "rector process",
+            "@style"
+        ],
+        "ci-full": [
+            "Composer\\Config::disableProcessTimeout",
+            "@deduplicate",
+            "@analyze",
+            "@test",
+            "@inspect",
+            "rector process",
+            "@style"
         ],
         "cs": [
             "Composer\\Config::disableProcessTimeout",
@@ -53,13 +71,13 @@
         ],
         "cs-fix": [
             "Composer\\Config::disableProcessTimeout",
-            "php-cs-fixer fix --ansi --verbose --diff"
+            "php-cs-fixer fix --ansi"
         ],
-        "style": "@cs-fix"
-    },
-    "config": {
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
+        "deduplicate": "phpcpd app/ src/",
+        "inspect": "deptrac analyze --cache-file=build/deptrac.cache",
+        "mutate": "infection --threads=2 --skip-initial-tests --coverage=build/phpunit",
+        "retool": "retool",
+        "style": "@cs-fix",
+        "test": "phpunit"
     }
 }

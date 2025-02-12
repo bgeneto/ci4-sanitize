@@ -12,22 +12,16 @@ class SanitizePublish extends BaseCommand
     /**
      * The group the command is lumped under
      * when listing commands.
-     *
-     * @var string
      */
     protected $group = 'Sanitize';
 
     /**
      * The Command's name
-     *
-     * @var string
      */
     protected $name = 'sanitize:publish';
 
     /**
      * the Command's short description
-     *
-     * @var string
      */
     protected $description = 'Sanitize config file publisher.';
 
@@ -39,6 +33,11 @@ class SanitizePublish extends BaseCommand
     protected $options = [
         '-f' => 'Force overwrite ALL existing files in destination.',
     ];
+
+    /**
+     * the Command's usage
+     */
+    protected $usage = 'secrets:publish';
 
     /**
      * The path to src directory.
@@ -63,7 +62,7 @@ class SanitizePublish extends BaseCommand
     protected function determineSourcePath()
     {
         $this->sourcePath = realpath(__DIR__ . '/../');
-        if ($this->sourcePath === '/' || empty($this->sourcePath)) {
+        if ($this->sourcePath === false) {
             CLI::error('Unable to determine the correct source directory. Bailing.');
 
             exit();

@@ -8,8 +8,8 @@
  * PHP version 8+
  *
  * @created    2025-02-10
- * @modified   2025-02-11
- * @version    1.0.1
+ * @modified   2025-02-12
+ * @version    1.0.2
  * @license    MIT
  */
 
@@ -72,7 +72,7 @@ trait SanitizableTrait
      *
      * @param array $rules An array of sanitization rules (field => [rule1, rule2, ...]).
      */
-    protected function setSanitizationRules(array $rules): void
+    public function setSanitizationRules(array $rules): void
     {
         $this->sanitizationRules = $rules;
     }
@@ -83,7 +83,7 @@ trait SanitizableTrait
      * @param string       $field The field name.
      * @param array|string $rule  The sanitization rule(s) to apply (string or array of strings).
      */
-    protected function addSanitizationRule(string $field, $rule): void
+    public function addSanitizationRule(string $field, $rule): void
     {
         if (! is_array($rule)) {
             $rule = [$rule]; // Ensure rule is always an array for consistency
@@ -108,7 +108,7 @@ trait SanitizableTrait
      *
      * @return array Merged rules.
      */
-    protected function loadAllRules(string $modelName): array
+    public function loadAllRules(string $modelName): array
     {
         $sanitizer   = new Sanitize();
         $configRules = $sanitizer->loadRules($modelName, $this->sanitizationRules);

@@ -78,7 +78,7 @@ class Sanitize
     {
         $mergedRules = $modelRules ?: $this->loadRules($modelName, []); // Use provided rules or load default
 
-        if (empty($mergedRules)) {
+        if ($mergedRules === []) {
             return $data; // No rules defined, return data as is
         }
 
@@ -112,7 +112,7 @@ class Sanitize
      */
     public static function sanitizeDataArray(array $data, array $rules): array
     {
-        if (empty($rules)) {
+        if ($rules === []) {
             return $data; // No rules provided, return data as is
         }
 

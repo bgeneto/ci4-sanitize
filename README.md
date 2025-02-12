@@ -1,4 +1,4 @@
-# CI4 Sanitize Library
+# CI4 Sanitize
 
 A CodeIgniter 4 (CI4) library that provides a flexible, rule-based data sanitization solution. This library includes the `Sanitize` class and the `SanitizableTrait` trait, which allow you to easily sanitize data in models and elsewhere in your application.
 
@@ -24,7 +24,7 @@ A CodeIgniter 4 (CI4) library that provides a flexible, rule-based data sanitiza
 2. You can clone the repository into your CodeIgniter 4 project and make a local Composer install.
 
     ```bash
-    git clone https://github.com/bgeneto/ci4-sanitize.git path/to/your/local/ci4-sanitize
+    git clone https://github.com/bgeneto/ci4-sanitize.git /path/to/your/local/ci4-sanitize
     ```
     Now edit your `composer.json` file and add a new repository:
     ```json
@@ -33,29 +33,31 @@ A CodeIgniter 4 (CI4) library that provides a flexible, rule-based data sanitiza
             "your-project/other-dependencies": "...",
             "bgeneto/ci4-sanitize": "dev-main"
         },
-        "repositories": [
-            {
+        
+        "repositories": {
+            "sanitize": {
                 "type": "path",
-                "url": "path/to/your/local/ci4-sanitize"
+                "url": "/path/to/your/local/ci4-sanitize"
             }
-        ]
+        }
     }
     ```
 3. You can also config your current project's `composer.json` file like this to install via GitHub: 
 
-    ```
+    ```json
     {
         "require": {
             "your-project/other-dependencies": "...",
             "bgeneto/ci4-sanitize": "dev-main"
         },
-        ...
+    
         "repositories": {
             "sanitize": {
                 "type": "vcs",
                 "url": "https://github.com/bgeneto/ci4-sanitize.git"
             }
-        },
+        }
+    }
     ```
 
 4. Then include the library in your project by updating your autoloader (not necessary if using CodeIgniter4 Autoloader).
