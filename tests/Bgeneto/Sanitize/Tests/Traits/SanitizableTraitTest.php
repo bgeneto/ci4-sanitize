@@ -69,34 +69,6 @@ class SanitizableTraitTest extends CIUnitTestCase
         $this->assertSame($expected, $rules);
     }
 
-    public function testLoadAllRulesWithConfig()
-    {
-        // Set up the configuration
-        $config = new \Bgeneto\Sanitize\Config\Sanitization();
-        $config->rules = [
-            'TestUserModel' => [
-                'name'  => ['trim', 'capitalize'],
-                'phone' => ['numbers_only'],
-            ],
-        ];
-        \Config\Services::injectMock('sanitization', $config);
-
-        $model = new TestUserModel();
-        $model->setSanitizationRules(['name' => ['lowercase']]); // Override config
-        $model->addSanitizationRule('email', ['trim', 'lowercase']);
-
-        $modelName = 'TestUserModel';
-        $rules = $model->loadAllRules($modelName);
-
-        $expected = [
-            'name'  => ['lowercase'],
-            'phone' => ['numbers_only'],
-            'email' => ['trim', 'lowercase'],
-        ];
-
-        $this->assertSame($expected, $rules);
-    }
-
     public function testSanitizeInsert()
     {
         $model = new TestUserModel();

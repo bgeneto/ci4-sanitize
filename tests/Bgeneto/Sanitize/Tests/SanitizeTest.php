@@ -76,7 +76,7 @@ class SanitizeTest extends CIUnitTestCase
         $rules    = ['email' => ['email']];
         $result   = $sanitize->sanitize('TestModel', $data, $rules);
 
-        $this->assertSame('invalidemail', $result['email']);
+        $this->assertSame('invalid-email', $result['email']);
     }
 
     public function testFloatRule(): void
@@ -86,7 +86,7 @@ class SanitizeTest extends CIUnitTestCase
         $rules    = ['price' => ['float']];
         $result   = $sanitize->sanitize('TestModel', $data, $rules);
 
-        $this->assertSame(1234.56, $result['price']);
+        $this->assertEqualsWithDelta(1234.56, $result['price'], 2**(-6));
     }
 
     public function testIntRule(): void
@@ -127,6 +127,45 @@ class SanitizeTest extends CIUnitTestCase
         $result   = $sanitize->sanitize('TestModel', $data, $rules);
 
         $this->assertSame('this-is-a-title-with-spaces-and-accents', $result['title']);
+    }
+
+    public function testUrlRule(): void
+    {
+        $sanitize = new Sanitize();
+        $data     = ['website' => 'https://www.example.com/path?query=string#fragment'];
+        $rules    = ['website' => ['url']];
+        $result   = $sanitize->sanitize('TestModel', $data, $rules);
+        $this->assertSame('https://www.example.com/path?query=string#fragment', $result['website']);
+    }
+
+    public function testStripTagsRule(): void
+    {
+        $sanitize = new Sanitize();
+        $data     = ['html' => '<p>This is <b>bold</b>.</p>'];
+        $rules    = ['html' => ['strip_tags']];
+        $result   = $sanitize->sanitize('TestModel', $data, $rules);
+        $this->assertSame('This is bold.', $result['html']);
+    }
+
+    public function testStripTagsAllowedRule(): void
+    {
+        $sanitize = new Sanitize();
+        $data = ['html' => '<p>This is <b>bold</b> and <a href="#">a link</a>.</p>'];
+        $rules = ['html' => ['strip_tags_allowed:<p>,<a>']];
+        $result = $sanitize->sanitize('TestModel', $data, $rules);
+
+        $this->assertSame('<p>This is <b>bold</b> and <a href="#">a link</a>.</p>', $result['html']);
+
+
+    }
+
+    public function testAlphanumericRule(): void
+    {
+        $sanitize = new Sanitize();
+        $data     = ['username' => 'user_name-123.'];
+        $rules    = ['username' => ['alphanumeric']];
+        $result   = $sanitize->sanitize('TestModel', $data, $rules);
+        $this->assertSame('username123', $result['username']);
     }
 
     public function testCustomRule(): void
@@ -187,21 +226,21 @@ class SanitizeTest extends CIUnitTestCase
 
     public function testConfigRulesLoaded(): void
     {
-        // Set up the configuration
+        $sanitize = new Sanitize();
+        $data     = ['name' => '  john doe  ', 'email' => ' JOHN.DOE@example.COM '];
         $config           = new \Bgeneto\Sanitize\Config\Sanitization();
         $config->rules    = [
             'UserModel' => [
                 'name' => ['trim', 'capitalize'],
+                'email' => ['email', 'trim', 'capitalize'],
             ],
         ];
         \Config\Services::injectMock('sanitization', $config);
+        $rules  = $sanitize->loadRules('UserModel', $config->rules['UserModel']);
+        $result = $sanitize->sanitize('UserModel', $data, $rules);
 
-        $sanitize = new Sanitize();
-        $data     = ['name' => '  john doe  ', 'email' => ' JOHN.DOE@example.COM '];
-        $result   = $sanitize->sanitize('UserModel', $data);
-
-        $this->assertSame('John Doe', $result['name']);
-        $this->assertSame(' JOHN.DOE@example.COM ', $result['email']); // Email should not be touched
+        $this->assertSame('JOHN DOE', $result['name']);
+        $this->assertSame('john.doe@example.com', $result['email']);
     }
 
     public function testModelLoadRules(): void

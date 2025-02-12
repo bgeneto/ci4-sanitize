@@ -10,11 +10,6 @@ class UserModel extends Model
 {
     use SanitizableTrait;
 
-    protected array $dynamicSanitizationRules = [];
-    public array $allowedCallbacks = [
-        'beforeInsert',
-    ];
-
     public function getSanitizationRules(): array
     {
         return $this->sanitizationRules;

@@ -14,8 +14,6 @@ class TestUserModel extends Model
 
     protected $allowedFields = ['name', 'email'];
 
-    protected array $dynamicSanitizationRules = [];
-
     protected $beforeInsert = [];
     protected $beforeUpdate = [];
 

@@ -40,7 +40,7 @@ trait SanitizableTrait
     /**
      * Allowed callbacks for the model.
      */
-    protected array $allowedCallbacks = [
+    private array $allowedCallbacks = [
         'beforeInsert',
         'afterInsert',
         'beforeUpdate',
