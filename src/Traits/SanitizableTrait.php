@@ -9,7 +9,7 @@
  *
  * @created    2025-02-10
  * @modified   2025-02-12
- * @version    1.0.2
+ * @version    1.0.3
  * @license    MIT
  */
 
