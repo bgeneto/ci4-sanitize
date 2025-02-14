@@ -15,7 +15,7 @@ class Sanitization extends BaseConfig
         ],
         // Other models sanitization rules can be added here:
         'TestModel' => [
-            'phrase' => ['trim', 'norm_spaces', 'lowercase'],
+            'phrase' => ['trim', 'norm_spaces', 'capitalize'],
         ],
     ];
 }

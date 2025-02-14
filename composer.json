@@ -19,11 +19,7 @@
     },
     "require-dev": {
         "codeigniter4/devkit": "*",
-        "codeigniter4/framework": "^4.1",
-        "codeigniter/coding-standard": "^1.8",
-        "friendsofphp/php-cs-fixer": "^3.68",
-        "nexusphp/cs-config": "^3.25",
-        "vimeo/psalm": "^6.5"
+        "codeigniter4/framework": "^4.1"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -37,7 +33,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Bgeneto\\Sanitize\\Tests\\": "tests/Bgeneto/Sanitize/Tests"
+            "Tests\\Support\\": "tests/_support",
+            "Bgeneto\\Sanitize\\Tests\\": "tests/unit"
         }
     },
     "config": {

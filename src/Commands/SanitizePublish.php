@@ -61,7 +61,7 @@ class SanitizePublish extends BaseCommand
      */
     protected function determineSourcePath()
     {
-        $this->sourcePath = realpath(__DIR__ . '/../');
+        $this->sourcePath = \realpath(__DIR__ . '/../');
         if ($this->sourcePath === false) {
             CLI::error('Unable to determine the correct source directory. Bailing.');
 
@@ -75,8 +75,8 @@ class SanitizePublish extends BaseCommand
     protected function publishConfig()
     {
         $path    = "{$this->sourcePath}/Config/Sanitization.php";
-        $content = file_get_contents($path);
-        $content = str_replace('namespace Bgeneto\Sanitize\Config', 'namespace Config', $content);
+        $content = \file_get_contents($path);
+        $content = \str_replace('namespace Bgeneto\Sanitize\Config', 'namespace Config', $content);
         $this->writeFile('Config/Sanitization.php', $content);
     }
 
@@ -91,28 +91,28 @@ class SanitizePublish extends BaseCommand
      */
     protected function writeFile(string $path, string $content): void
     {
-        helper('filesystem');
+        \helper('filesystem');
 
         $config    = new Autoload();
         $appPath   = $config->psr4[APP_NAMESPACE];
-        $directory = dirname($appPath . $path);
-        if (! is_dir($directory)) {
-            mkdir($directory, 0777, true);
+        $directory = \dirname($appPath . $path);
+        if (! \is_dir($directory)) {
+            \mkdir($directory, 0777, true);
         }
-        if (file_exists($appPath . $path) && CLI::prompt('Config file already exists, do you want to replace it?', ['y', 'n']) === 'n') {
+        if (\file_exists($appPath . $path) && CLI::prompt('Config file already exists, do you want to replace it?', ['y', 'n']) === 'n') {
             CLI::error('Cancelled');
 
             exit();
         }
 
         try {
-            write_file($appPath . $path, $content);
+            \write_file($appPath . $path, $content);
         } catch (Exception $e) {
             $this->showError($e);
 
             exit();
         }
-        $path = str_replace($appPath, '', $path);
+        $path = \str_replace($appPath, '', $path);
         CLI::write(CLI::color('Created: ', 'yellow') . $path);
     }
 }

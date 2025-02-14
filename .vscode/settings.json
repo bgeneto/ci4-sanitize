@@ -1,0 +1,29 @@
+{
+    "php.validate.executablePath": "C:/Users/bernh/Nextcloud/Laragon/bin/php/php-8.3.16-Win32-vs16-x64/php.exe",
+    "search.exclude": {
+        "**/.git": true,
+        "**/.vscode": true,
+        "**/build/**": true,
+        "**/img/**": true,
+        "**/log/**": true,
+        "**/public": true,
+        "**/uploads/**": true,
+        "**/vendor/**/{Tests,tests}/**": true,
+        "**/writable": true
+    },
+    "intelephense.files.exclude": [
+        "**/.git/**",
+        "**/.svn/**",
+        "**/.hg/**",
+        "**/CVS/**",
+        "**/.DS_Store/**",
+        "**/node_modules/**",
+        "**/bower_components/**",
+        "**/vendor/**/{Tests,tests}/**",
+        "**/.history/**",
+        "**/.vscode/**",
+        "**/.idea/**",
+        "**/build/**",
+        "**/writable/**"
+    ]
+}
