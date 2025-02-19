@@ -106,7 +106,7 @@ class Sanitizer
      *
      * @return array Sanitized data
      */
-    public function sanitize(array $data, array $rules = []): array
+    public function sanitize(mixed $data, array $rules = []): array
     {
         $mergedRules = \array_replace_recursive($this->getRules(), $rules);
 
@@ -114,24 +114,39 @@ class Sanitizer
             // No rules defined, return data as is
             return $data;
         }
+		
+		// Check if the the value is an array
+		if(is_array($data)){
+			
+			$sanitizedData = [];
+			
+			foreach ($data as $field => $value) {
+				if (isset($mergedRules[$field])) {
+					$rules          = $mergedRules[$field];
+					$sanitizedValue = $value;
 
-        $sanitizedData = [];
+					foreach ($rules as $rule) {
+						$sanitizedValue = self::applyRule($sanitizedValue, $rule);
+					}
+					$sanitizedData[$field] = $sanitizedValue;
+				} else {
+					$sanitizedData[$field] = $value; // No rule for this field, keep original value
+				}
+			}
+			
+			return $sanitizedData;
+		}
+		// Single value
+		else{
+			
+			$sanitizedValue = $value;
 
-        foreach ($data as $field => $value) {
-            if (isset($mergedRules[$field])) {
-                $rules          = $mergedRules[$field];
-                $sanitizedValue = $value;
-
-                foreach ($rules as $rule) {
-                    $sanitizedValue = self::applyRule($sanitizedValue, $rule);
-                }
-                $sanitizedData[$field] = $sanitizedValue;
-            } else {
-                $sanitizedData[$field] = $value; // No rule for this field, keep original value
-            }
-        }
-
-        return $sanitizedData;
+			foreach ($rules as $rule) {
+				$sanitizedValue = self::applyRule($sanitizedValue, $rule);
+			}
+			
+			return $sanitizedValue;
+		}
     }
 
     /**
