@@ -22,6 +22,11 @@ use RuntimeException;
 
 trait SanitizableTrait
 {
+    /**
+     * Sanitizer instance.
+     *
+     * @var Sanitizer|null $sanitizer
+     */
     protected ?Sanitizer $sanitizer = null;
 
     /**
