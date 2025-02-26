@@ -106,7 +106,7 @@ class Sanitizer
      *
      * @return array Sanitized data
      */
-    public function sanitize(array $data, array $rules = []): array
+    public function sanitize(mixed $data, array $rules = []): array
     {
         $mergedRules = \array_replace_recursive($this->getRules(), $rules);
 
@@ -114,24 +114,39 @@ class Sanitizer
             // No rules defined, return data as is
             return $data;
         }
+		
+		// Check if the the value is an array
+		if(is_array($data)){
+			
+			$sanitizedData = [];
+			
+			foreach ($data as $field => $value) {
+				if (isset($mergedRules[$field])) {
+					$rules          = $mergedRules[$field];
+					$sanitizedValue = $value;
 
-        $sanitizedData = [];
+					foreach ($rules as $rule) {
+						$sanitizedValue = self::applyRule($sanitizedValue, $rule);
+					}
+					$sanitizedData[$field] = $sanitizedValue;
+				} else {
+					$sanitizedData[$field] = $value; // No rule for this field, keep original value
+				}
+			}
+			
+			return $sanitizedData;
+		}
+		// Single value
+		else{
+			
+			$sanitizedValue = $value;
 
-        foreach ($data as $field => $value) {
-            if (isset($mergedRules[$field])) {
-                $rules          = $mergedRules[$field];
-                $sanitizedValue = $value;
-
-                foreach ($rules as $rule) {
-                    $sanitizedValue = self::applyRule($sanitizedValue, $rule);
-                }
-                $sanitizedData[$field] = $sanitizedValue;
-            } else {
-                $sanitizedData[$field] = $value; // No rule for this field, keep original value
-            }
-        }
-
-        return $sanitizedData;
+			foreach ($rules as $rule) {
+				$sanitizedValue = self::applyRule($sanitizedValue, $rule);
+			}
+			
+			return $sanitizedValue;
+		}
     }
 
     /**
@@ -148,25 +163,32 @@ class Sanitizer
             return self::applyRuleWithParams($value, $rule);
         }
 
-        // Handle predefined rules without parameters
-        return match ($rule) {
-            'trim'               => \mb_trim($value),
-            'lowercase'          => \mb_strtolower($value),
-            'uppercase'          => \mb_strtoupper($value),
-            'capitalize'         => \ucwords(\mb_strtolower($value)),
-            'numbers_only'       => \preg_replace('/[^0-9]/u', '', (string) $value),
-            'email'              => \filter_var($value, FILTER_SANITIZE_EMAIL),
-            'float'              => \filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-            'int'                => (int) \filter_var($value, FILTER_SANITIZE_NUMBER_INT),
-            'htmlspecialchars'   => \htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'),
-            'norm_spaces'        => \mb_trim(\preg_replace('/\s+/u', ' ', (string) $value)),
-            'slug'               => self::generateSlug($value),
-            'url'                => \filter_var($value, FILTER_SANITIZE_URL),
-            'strip_tags'         => \strip_tags($value),
-            'strip_tags_allowed' => self::stripTagsAllowed($value),
-            'alphanumeric'       => \preg_replace('/[^a-zA-Z0-9]/u', '', (string) $value),
-            default              => self::applyCustomRule($value, $rule),
-        };
+		// Check if the the value is not null
+		if($value !== NULL && $value != '') {
+			
+			// Handle predefined rules without parameters
+			return match ($rule) {
+				'trim'               => \mb_trim($value),
+				'lowercase'          => \mb_strtolower($value),
+				'uppercase'          => \mb_strtoupper($value),
+				'capitalize'         => \ucwords(\mb_strtolower($value)),
+				'numbers_only'       => \preg_replace('/[^0-9]/u', '', (string) $value),
+				'email'              => \filter_var($value, FILTER_SANITIZE_EMAIL),
+				'float'              => \filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+				'int'                => (int) \filter_var($value, FILTER_SANITIZE_NUMBER_INT),
+				'htmlspecialchars'   => \htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'),
+				'norm_spaces'        => \mb_trim(\preg_replace('/\s+/u', ' ', (string) $value)),
+				'slug'               => self::generateSlug($value),
+				'url'                => \filter_var($value, FILTER_SANITIZE_URL),
+				'strip_tags'         => \strip_tags($value),
+				'strip_tags_allowed' => self::stripTagsAllowed($value),
+				'alphanumeric'       => \preg_replace('/[^a-zA-Z0-9]/u', '', (string) $value),
+				default              => self::applyCustomRule($value, $rule),
+			};
+			
+		} else {
+			return $value;
+		}       
     }
 
     /**
